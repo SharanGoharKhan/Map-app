@@ -1,25 +1,31 @@
 import { Component } from '@angular/core';
 import * as io from 'socket.io-client';
-
+import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+   meessageRecieved:string ='';
+   url:string  = 'http://localhost:4200';
    title: string = 'My first angular2-google-maps project';
    lat: number = 51.678418;
    lng: number = 7.809007;
    something:string ='';
    socket = null;
    constructor() {
-     this.socket = io('http://localhost:4200');
-     this.socket.on('locationUpdate',function(data){
-       this.title = data;
-     }.bind(this));
+    //  this.socket.on('locationUpdate',function(data){
+    //    this.title = data;
+    //  }.bind(this));
+   }
+   sendMessage(message){
+     console.log(message.value);
    }
    changeLocation(){
-    this.socket.emit('location',this.something);
+    this.socket.emit('locationUpdate','asdfdferf');
+
+    this.socket.emit('locationUpdate',this.something);
     this.something='';
    }
 }

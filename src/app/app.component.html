@@ -6,7 +6,14 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <button class="btn btn-primary" (click)="changeLocation()">Change marker position</button>
+      <input type="text" class="form-control" #message>
+      <button class="btn btn-primary" (click)="sendMessage(message)">Send Message</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <p>{{meessageRecieved}}</p>
+      <!--<button classs="btn btn-default" (click)="getMessage()">Get Message</button>-->
     </div>
   </div>
 </div>
