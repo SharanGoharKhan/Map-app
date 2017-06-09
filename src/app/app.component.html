@@ -1,8 +1,19 @@
-<h1>{{ title }}</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+        <h1>{{ title }}</h1>      
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-primary" (click)="changeLocation()">Change marker position</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
-
 <sebm-google-map [latitude]="lat" [longitude]="lng">
   <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
 </sebm-google-map>

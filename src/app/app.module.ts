@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     AppComponent
@@ -15,6 +15,7 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
     BrowserModule,
     CommonModule,
     FormsModule,
+    NgbModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBYyODuGdlqjlyj0RPu_F_BCwnseahh3_Y'
     })
