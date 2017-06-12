@@ -1,31 +1,61 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+// import { Control }  from '@angular/common';
+import { Subscription } from 'rxjs/Subscription';
+import { ChatService } from './chat.service';
 import * as io from 'socket.io-client';
-import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-   meessageRecieved:string ='';
-   url:string  = 'http://localhost:4200';
+  //  meessageRecieved:string ='';
+  //  url:string  = 'http://localhost:3000';
+  //  sentMessage:string;
    title: string = 'My first angular2-google-maps project';
-   lat: number = 51.678418;
-   lng: number = 7.809007;
-   something:string ='';
-   socket = null;
-   constructor() {
-    //  this.socket.on('locationUpdate',function(data){
-    //    this.title = data;
-    //  }.bind(this));
-   }
-   sendMessage(message){
-     console.log(message.value);
-   }
-   changeLocation(){
-    this.socket.emit('locationUpdate','asdfdferf');
-
-    this.socket.emit('locationUpdate',this.something);
-    this.something='';
-   }
+   socket;
+   messages = [];
+   recieveMessages: Subscription;
+   message;
+   dummyMessage;
+   lat: number = 51.673858;
+   lng: number = 7.815982;
+   zoom = 12;
+   constructor(private chatService:ChatService) {}
+   ngOnInit() {
+    // this.recieveMessages = this.chatService.getMessages().subscribe(message => {
+    //   this.messages.push(message);
+    // })
+    // this.dummyMessage = this.chatService.getMessages();
+    // this.recieveMessages = this.chatService.messagesChanged
+    // .subscribe(
+    //   (msg:any)=>{
+    //     console.log(msg);
+    //     this.messages.push(msg);
+    //   }
+    // )
+    this.socket = io('http://localhost:3000');
+    this.socket.on('message', (data) => {
+        console.log(data);
+        this.lat = +data.lat;
+        this.lng = +data.lng;    
+      });
+  }
+  //  sendMessage(message){
+  //    this.sentMessage=message.value;
+  //    this.chatService.sendMessage(this.sentMessage);
+  //    this.sentMessage = '';
+     
+  //  }
+  //  getMessage(){
+  //   let observable = new Observable(observer =>{
+  //     this.socket = io(this.url);
+  //     this.socket.on('message'),(data)=> {
+  //       observer.next(data);
+  //     }
+  //   });
+  //  }
+  ngOnDestroy() {
+    this.recieveMessages.unsubscribe();
+  }
 }

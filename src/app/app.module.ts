@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { ChatService } from './chat.service';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -20,7 +21,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
       apiKey: 'AIzaSyBYyODuGdlqjlyj0RPu_F_BCwnseahh3_Y'
     })
   ],
-  providers: [],
+  providers: [ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

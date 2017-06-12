@@ -1,26 +1,6 @@
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12">
-        <h1>{{ title }}</h1>      
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <input type="text" class="form-control" #message>
-      <button class="btn btn-primary" (click)="sendMessage(message)">Send Message</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <p>{{meessageRecieved}}</p>
-      <!--<button classs="btn btn-default" (click)="getMessage()">Get Message</button>-->
-    </div>
-  </div>
-</div>
-
-
+<h1>{{ title }}</h1>      
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
-<sebm-google-map [latitude]="lat" [longitude]="lng">
+<sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
   <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
 </sebm-google-map>
