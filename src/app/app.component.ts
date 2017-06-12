@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ChatService } from './chat.service';
 import * as io from 'socket.io-client';
+import { MapModel } from './map.model';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,6 +22,7 @@ export class AppComponent {
    lat: number = 51.673858;
    lng: number = 7.815982;
    zoom = 12;
+   mapModel: MapModel;
    constructor(private chatService:ChatService) {}
    ngOnInit() {
     // this.recieveMessages = this.chatService.getMessages().subscribe(message => {
@@ -34,12 +36,19 @@ export class AppComponent {
     //     this.messages.push(msg);
     //   }
     // )
-    this.socket = io('http://localhost:3000');
-    this.socket.on('message', (data) => {
-        console.log(data);
-        this.lat = +data.lat;
-        this.lng = +data.lng;    
-      });
+    this.recieveMessages = this.chatService.messagesChanged
+    .subscribe(
+      (result:MapModel)=>{
+        this.lat = result.lat;
+        this.lng = result.lng;
+      }
+    )
+    // this.socket = io('http://localhost:3000');
+    // this.socket.on('message', (data) => {
+    //     console.log(data);
+    //     this.lat = +data.lat;
+    //     this.lng = +data.lng;    
+    //   });
   }
   //  sendMessage(message){
   //    this.sentMessage=message.value;
