@@ -1,0 +1,36 @@
+<!--<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input #input type="text">      
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary confirm-btn" (click)="closeModal()">Save changes</button>
+  </div>
+</div>-->
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title">Add Task</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <label for="pick_address">Pickup Address</label>
+      <input #pickupInput type="text">
+      <br>
+      <label for="drop_address">Drop Address</label>
+      <input #dropInput type="text">
+      <agm-map appGoogleMaps [origin]="origin" [destination]="destination"  #map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+        <!--<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>-->
+      </agm-map>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="getDirection()">Get Direction</button>
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+  </div>
+  </div>

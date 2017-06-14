@@ -1,70 +1,54 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-// import { Control }  from '@angular/common';
-import { Subscription } from 'rxjs/Subscription';
-import { ChatService } from './chat.service';
-import * as io from 'socket.io-client';
-import { MapModel } from './map.model';
+import { Component, ViewContainerRef } from '@angular/core';
+import * as $ from 'jquery';
+
+import { GlobalState } from './global.state';
+import { BaImageLoaderService, BaThemePreloader, BaThemeSpinner } from './theme/services';
+import { BaThemeConfig } from './theme/theme.config';
+import { layoutPaths } from './theme/theme.constants';
+
+/*
+ * App Component
+ * Top Level Component
+ */
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app',
+  styleUrls: ['./app.component.scss'],
+  template: `
+    <main [class.menu-collapsed]="isMenuCollapsed" baThemeRun>
+      <div class="additional-bg"></div>
+      <router-outlet></router-outlet>
+    </main>
+  `
 })
-export class AppComponent {
-  //  meessageRecieved:string ='';
-  //  url:string  = 'http://localhost:3000';
-  //  sentMessage:string;
-   title: string = 'My first angular2-google-maps project';
-   socket;
-   messages = [];
-   recieveMessages: Subscription;
-   message;
-   dummyMessage;
-   lat: number = 51.673858;
-   lng: number = 7.815982;
-   zoom = 16;
-   mapModel: MapModel;
-   constructor(private chatService:ChatService) {}
-   ngOnInit() {
-    // this.recieveMessages = this.chatService.getMessages().subscribe(message => {
-    //   this.messages.push(message);
-    // })
-    // this.dummyMessage = this.chatService.getMessages();
-    // this.recieveMessages = this.chatService.messagesChanged
-    // .subscribe(
-    //   (msg:any)=>{
-    //     console.log(msg);
-    //     this.messages.push(msg);
-    //   }
-    // )
-    this.recieveMessages = this.chatService.messagesChanged
-    .subscribe(
-      (result:MapModel)=>{
-        this.lat = result.lat;
-        this.lng = result.lng;
-      }
-    )
-    // this.socket = io('http://localhost:3000');
-    // this.socket.on('message', (data) => {
-    //     console.log(data);
-    //     this.lat = +data.lat;
-    //     this.lng = +data.lng;    
-    //   });
+export class App {
+
+  isMenuCollapsed: boolean = false;
+
+  constructor(private _state: GlobalState,
+              private _imageLoader: BaImageLoaderService,
+              private _spinner: BaThemeSpinner,
+              private viewContainerRef: ViewContainerRef,
+              private themeConfig: BaThemeConfig) {
+
+    themeConfig.config();
+
+    this._loadImages();
+
+    this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
+      this.isMenuCollapsed = isCollapsed;
+    });
   }
-  //  sendMessage(message){
-  //    this.sentMessage=message.value;
-  //    this.chatService.sendMessage(this.sentMessage);
-  //    this.sentMessage = '';
-     
-  //  }
-  //  getMessage(){
-  //   let observable = new Observable(observer =>{
-  //     this.socket = io(this.url);
-  //     this.socket.on('message'),(data)=> {
-  //       observer.next(data);
-  //     }
-  //   });
-  //  }
-  ngOnDestroy() {
-    this.recieveMessages.unsubscribe();
+
+  public ngAfterViewInit(): void {
+    // hide spinner once all loaders are completed
+    BaThemePreloader.load().then((values) => {
+      this._spinner.hide();
+    });
   }
+
+  private _loadImages(): void {
+    // register some loaders
+    BaThemePreloader.registerLoader(this._imageLoader.load('/assets/img/sky-bg.jpg'));
+  }
+
 }
