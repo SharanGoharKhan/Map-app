@@ -21,7 +21,7 @@ export class AppComponent {
    dummyMessage;
    lat: number = 51.673858;
    lng: number = 7.815982;
-   zoom = 12;
+   zoom = 16;
    mapModel: MapModel;
    constructor(private chatService:ChatService) {}
    ngOnInit() {
