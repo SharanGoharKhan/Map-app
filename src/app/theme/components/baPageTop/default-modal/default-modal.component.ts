@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgmMap } from '@agm/core';
 import {} from '@types/googlemaps';
+import { AgentService } from './agent.service';
 
 @Component({
   selector: 'add-service-modal',
@@ -20,7 +21,10 @@ export class DefaultModal implements OnInit {
   autocomplete_dropup: google.maps.places.Autocomplete;
   origin: google.maps.LatLng;
   destination: google.maps.LatLng;
-  constructor(private activeModal: NgbActiveModal) {
+  agents;
+  errorMessage;
+
+  constructor(private activeModal: NgbActiveModal, private agentService: AgentService) {
   }
   ngOnInit() {
     this.autocomplete_pickup = new google.maps.places.Autocomplete(this.pickupInput.nativeElement, {
@@ -35,9 +39,7 @@ export class DefaultModal implements OnInit {
     });
 
     this.autocomplete_pickup.addListener('place_changed', () => {
-      // console.log(this.autocomplete_pickup.getPlace());
       this.origin = this.autocomplete_pickup.getPlace().geometry.location;
-      // this.origin = this.autocomplete_pickup.getPlace().name;
     });
     this.autocomplete_dropup.addListener('place_changed', () => {
       this.destination = this.autocomplete_dropup.getPlace().geometry.location;
@@ -58,5 +60,14 @@ export class DefaultModal implements OnInit {
 
     // console.log("Place 1: " + this.autocomplete_pickup.getPlace().name);
     // console.log("Place 2:" + this.autocomplete_dropup.getPlace().name);
+  }
+  handleMarkerEmitter(event) {
+    console.log('handled Marker Emitter: ' + JSON.stringify(event));
+    this.agentService.getAgents(event.lat, event.lng).then().catch();
+    // .subscribe(
+    //   agents => this.agents,
+    //   error => this.errorMessage = <any>error
+    // );
+    // console.log(this.agents);
   }
 }

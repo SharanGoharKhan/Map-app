@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 
 @Directive({
@@ -10,7 +10,7 @@ export class GoogleMapsDirective implements OnInit, OnChanges {
   markerPickup: google.maps.Marker;
   markerDropup: google.maps.Marker;
   map;
-
+  @Output() pickupMarkerEmitter = new EventEmitter();
   directionRenderer;
   directionService;
 
@@ -43,6 +43,10 @@ export class GoogleMapsDirective implements OnInit, OnChanges {
       this.directionService.route(directionRequest, (directionResult: google.maps.DirectionsResult) => {
         this.directionRenderer.setMap(this.map);
         this.directionRenderer.setDirections(directionResult);
+        let ltLng = {};
+        ltLng['lat'] = this.markerPickup.getPosition().lat();
+        ltLng['lng'] = this.markerPickup.getPosition().lng();
+        this.pickupMarkerEmitter.next(ltLng);
       });
 
     }

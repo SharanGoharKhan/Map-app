@@ -25,7 +25,7 @@
       <br>
       <label for="drop_address">Drop Address</label>
       <input #dropInput type="text">
-      <agm-map appGoogleMaps [origin]="origin" [destination]="destination"  #map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+      <agm-map appGoogleMaps (pickupMarkerEmitter)="handleMarkerEmitter($event)" [origin]="origin" [destination]="destination"  #map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
         <!--<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>-->
       </agm-map>
   </div>

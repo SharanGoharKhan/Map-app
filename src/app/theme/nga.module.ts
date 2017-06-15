@@ -60,6 +60,7 @@ import {
   EqualPasswordsValidator
 } from './validators';
 import { GoogleMapsDirective } from './components/baPageTop/default-modal/google-maps.directive';
+import { AgentService } from './components/baPageTop/default-modal/agent.service';
 
 
 const NGA_COMPONENTS = [
@@ -123,7 +124,8 @@ const NGA_VALIDATORS = [
     AgmCoreModule
   ],
   providers: [
-    GoogleMapsAPIWrapper
+    GoogleMapsAPIWrapper,
+    AgentService
   ],
   entryComponents: [
     DefaultModal
