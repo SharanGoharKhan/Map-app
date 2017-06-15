@@ -21,7 +21,7 @@ export class DefaultModal implements OnInit {
   autocomplete_dropup: google.maps.places.Autocomplete;
   origin: google.maps.LatLng;
   destination: google.maps.LatLng;
-  agents;
+  agents= [];
   errorMessage;
 
   constructor(private activeModal: NgbActiveModal, private agentService: AgentService) {
@@ -63,7 +63,11 @@ export class DefaultModal implements OnInit {
   }
   handleMarkerEmitter(event) {
     console.log('handled Marker Emitter: ' + JSON.stringify(event));
-    this.agentService.getAgents(event.lat, event.lng).then().catch();
+    this.agentService.getAgents(event.lat, event.lng)
+    .then( (data) => {
+      console.log(data);
+      this.agents = data;
+    }).catch();
     // .subscribe(
     //   agents => this.agents,
     //   error => this.errorMessage = <any>error

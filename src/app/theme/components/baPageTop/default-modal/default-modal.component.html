@@ -30,6 +30,13 @@
       </agm-map>
   </div>
   <div class="modal-footer">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Agent
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li *ngFor="let agent of agents" style="cursor:pointer"><a>{{agent.name}}</a></li>
+      </ul>
+    </div>
     <button class="btn btn-primary" (click)="getDirection()">Get Direction</button>
     <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
   </div>

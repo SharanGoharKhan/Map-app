@@ -25,7 +25,9 @@ export class AgentService {
         })
         .toPromise()
         .then((response) => {
-          response.json();
+          // console.log(response);
+          // console.log(response.json());
+          return response.json();
         })
         .catch(err => {
             console.log(err);
