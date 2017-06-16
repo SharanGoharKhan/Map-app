@@ -15,22 +15,17 @@ export class GoogleMapsDirective implements OnInit, OnChanges {
   directionService;
 
  ngOnInit() {
-  // console.log(this.destination);
-  // console.log(this.origin);
  }
 
  ngOnChanges(change: SimpleChanges) {
-   console.log(change);
    // place marker if origin is not first change
    if (change.origin && !change.origin.isFirstChange()) {
-     console.log("if statement");
       this.markerPickup = new google.maps.Marker();
       this.markerPickup.setPosition(this.origin);
       this.markerPickup.setMap(this.map);
    }
    // place marker if destination is not first change
     if (change.destination && !change.destination.isFirstChange()) {
-      console.log('destination block');
       this.markerDropup = new google.maps.Marker();
       this.markerDropup.setPosition(this.destination);
       this.markerDropup.setMap(this.map);
@@ -43,9 +38,11 @@ export class GoogleMapsDirective implements OnInit, OnChanges {
       this.directionService.route(directionRequest, (directionResult: google.maps.DirectionsResult) => {
         this.directionRenderer.setMap(this.map);
         this.directionRenderer.setDirections(directionResult);
-        let ltLng = {};
-        ltLng['lat'] = this.markerPickup.getPosition().lat();
-        ltLng['lng'] = this.markerPickup.getPosition().lng();
+        let ltLng = { origin: [], destination: [] };
+        ltLng.origin.push(this.markerPickup.getPosition().lat());
+        ltLng.origin.push(this.markerPickup.getPosition().lng());
+        ltLng.destination.push(this.markerPickup.getPosition().lat());
+        ltLng.destination.push(this.markerPickup.getPosition().lng());
         this.pickupMarkerEmitter.next(ltLng);
       });
 
@@ -59,7 +56,6 @@ export class GoogleMapsDirective implements OnInit, OnChanges {
     this.directionService = new google.maps.DirectionsService();
 
     this._apiWrapper.getNativeMap().then((map) => {
-      console.log(map);
       this.map = map;
     });
   }

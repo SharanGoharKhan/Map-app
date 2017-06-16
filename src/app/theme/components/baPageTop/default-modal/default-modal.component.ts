@@ -14,8 +14,9 @@ export class DefaultModal implements OnInit {
   @ViewChild('pickupInput') pickupInput: ElementRef;
   @ViewChild('dropInput') dropInput: ElementRef;
   @ViewChild('map') map: AgmMap;
+  estimated: string = '2:00 minutes';
   lat: number = 33.7294;
-  lng: number =  73.0931;
+  lng: number = 73.0931;
   zoom: number = 12;
   autocomplete_pickup: google.maps.places.Autocomplete;
   autocomplete_dropup: google.maps.places.Autocomplete;
@@ -49,29 +50,32 @@ export class DefaultModal implements OnInit {
   closeModal() {
     this.activeModal.close();
   }
-  getDirection() {
-    // let directionDisplay = new google.maps.DirectionsRenderer();
-    // let directionService = new google.maps.DirectionsService();
-    // google.maps.TravelMode.
-    // let geoencoder = new google.maps.Geocoder();
-    // GoogleMap
-    // directionDisplay.setMap(this.map);
-    // google.maps.directionstr
-
-    // console.log("Place 1: " + this.autocomplete_pickup.getPlace().name);
-    // console.log("Place 2:" + this.autocomplete_dropup.getPlace().name);
-  }
   handleMarkerEmitter(event) {
-    console.log('handled Marker Emitter: ' + JSON.stringify(event));
-    this.agentService.getAgents(event.lat, event.lng)
+    // Estimate time
+    console.log('cordinates');
+    console.log(event.origin[0].toString());
+    
+    let origin = event.origin[0].toString() + ',' + event.origin[1].toString();
+    //let origin = new google.maps.LatLng(event.origin[0], event.origin[1]);
+    let destination = new google.maps.LatLng(event.destination[0], event.destination[1]);
+    let directionService = new google.maps.DirectionsService();
+    let request: google.maps.DirectionsRequest;
+    request.origin = origin;
+    request.destination = destination;
+    request.travelMode = google.maps.TravelMode.DRIVING;
+
+    directionService.route(request, function(response, status) {
+      console.log('directionService');
+      console.log(status);
+     // if (status == 'OK') {
+        console.log(response);
+      //}
+    });
+
+    this.agentService.getAgents(event.origin[0], event.origin[1])
     .then( (data) => {
       console.log(data);
       this.agents = data;
     }).catch();
-    // .subscribe(
-    //   agents => this.agents,
-    //   error => this.errorMessage = <any>error
-    // );
-    // console.log(this.agents);
   }
 }
